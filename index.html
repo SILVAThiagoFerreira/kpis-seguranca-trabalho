@@ -4,18 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#38424B" />
-  <title>Segurança do Trabalho · Pessoas & Processos</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <title>Segurança do Trabalho - US Vale Verde</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="topbar"><a class="brand" href="#" aria-label="ENAEX Brasil"><img src="assets/enaex-white.png" alt="Enaex Brasil" /></a><div class="topbar-title"><span>US VALE VERDE</span><strong>Segurança do Trabalho</strong></div><div class="live"><i></i><span id="updatedAt">Conectando às planilhas</span></div></header>
-  <main class="shell">
-    <section class="intro"><div class="eyebrow">Painel integrado · 2026</div><h1>Risco sob controle,<br><em>decisão em movimento.</em></h1><p>Indicadores de segurança organizados para acompanhar a saúde das pessoas e a disciplina dos processos na operação.</p><div class="switcher" role="tablist" aria-label="Visão do dashboard"><button class="tab active" data-view="pessoas" role="tab" aria-selected="true">Pessoas <span>01</span></button><button class="tab" data-view="processos" role="tab" aria-selected="false">Processos <span>02</span></button></div></section>
-    <section id="dashboard" class="dashboard" aria-live="polite"><div class="loading"><div class="spinner"></div><p>Carregando indicadores das planilhas…</p></div></section>
-    <footer><span>Fonte: planilhas KPI's Segurança do Trabalho</span><span>Atualização automática ao abrir · <a id="sourceLink" href="#" target="_blank" rel="noreferrer">abrir base</a></span></footer>
+  <header class="topbar"><a class="brand" href="#top" aria-label="Enaex Brasil"><img src="assets/enaex-white.png" alt="Enaex Brasil"></a><div class="topbar-title"><span>US VALE VERDE</span><strong>SEGURANÇA DO TRABALHO - US VALE VERDE</strong></div><div class="live" title="Conexão com as planilhas ativa"><i></i></div></header>
+  <nav class="anchor-nav" aria-label="Navegação do painel"><a href="#pessoas" class="active">Pessoas</a><a href="#processos">Processos</a><a href="#fontes">Fontes</a></nav>
+  <main id="top" class="shell">
+    <section class="intro"><div class="eyebrow">Painel integrado · 2026</div><h1>Risco sob controle, decisão em movimento.</h1><p>Indicadores de segurança para acompanhar a saúde das pessoas, a validade dos controles e a disciplina dos processos na operação.</p></section>
+    <div id="dashboard"><div class="loading"><div class="spinner"></div><p>Carregando indicadores das planilhas…</p></div></div>
+    <footer id="fontes"><span>Fonte: planilhas KPI's Segurança do Trabalho</span><span>Atualização automática ao abrir · <a id="sourceLink" href="#" target="_blank" rel="noreferrer">abrir bases</a></span></footer>
   </main><script src="app.js"></script>
 </body>
 </html>
