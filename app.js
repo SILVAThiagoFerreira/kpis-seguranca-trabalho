@@ -1,6 +1,6 @@
 const SOURCES={
   pessoas:{id:'1XAH58-6rwC0kFHVwKlgvknFjLjLE-S7d',sheets:{asos:'Gestão de ASOS',treinos:'Treinamentos Obrigatórios',horas:'Horas Treinadas',recusa:'Direito de Recusa (Aplicação)',atestados:'Atestados',pare:'PARE (Aplicação)'}},
-  processos:{id:'1v0gp-iixQYqfZ2ah68clCmf_PdGv9Ydz',sheets:{nota:'Avaliação de Contratadas (MVV)',dds:'DDS (Participação)',temas:'DDS (Temas Abordados)',inspecoes:'Inspeções Mensais de Segurança',vct:'VCT',docs:'Validade de documentos e Laudos',comiss:'Validade de Comissionameno)',acidentes:'Acidentes e Incidentes',epis:'Gestão de EPIS',fardamentos:'Gestão de Fardamentos '}}
+  processos:{id:'1v0gp-iixQYqfZ2ah68clCmf_PdGv9Ydz',sheets:{nota:'Avaliação de Contratadas (MVV)',dds:'DDS (Participação)',temas:'DDS (Temas Abordados)',inspecoes:'Inspeções Mensais de Segurança',vct:'VCT',docs:'Validade de documentos e Laudos',comiss:'Validade de Comissionameno)',cipamin:'CIPAMIN (Reuniões e Ações)',acidentes:'Acidentes e Incidentes',epis:'Gestão de EPIS',fardamentos:'Gestão de Fardamentos '}}
 };
 const $=s=>document.querySelector(s);let cache={};
 const FILTERS={year:'all',month:'all',status:'all',area:'all'};const CACHE_SHEETS={};
@@ -11,6 +11,8 @@ const FILTER_SHEETS={
   'DDS (Temas Abordados)':{dates:[1]},
   'Inspeções Mensais de Segurança':{dates:[1]},
   'VCT':{dates:[1]},
+  'CIPAMIN (Reuniões e Ações)':{dates:[1]},
+  'Treinamentos Obrigatórios':{dates:[3]},
   'Validade de documentos e Laudos':{dates:[2],status:3},
   'Gestão de EPIS':{status:'stock',value:4},
   'Gestão de Fardamentos ':{status:'stock',value:3}
@@ -76,6 +78,16 @@ const FILTER_TERMS={
 };
 Object.keys(FILTER_TERMS).forEach(lang=>Object.assign(uiTerms[lang]||(uiTerms[lang]={}),FILTER_TERMS[lang]));
 Object.assign(FILTER_TERMS.es,{'Todos os anos':'Todos los años','Todos os meses':'Todos los meses','Todos os status':'Todos los estados'});
+const volumeTerms={
+  'pt-BR':{'Treinamentos':'Treinamentos','Ação CIPAMIN':'Ação CIPAMIN','Reunião CIPAMIN':'Reunião CIPAMIN','Registros por frente':'Registros por frente'},
+  'pt-PT':{'Treinamentos':'Formações','Ação CIPAMIN':'Ação CIPAMIN','Reunião CIPAMIN':'Reunião CIPAMIN','Registros por frente':'Registos por frente'},
+  es:{'Treinamentos':'Capacitaciones','Ação CIPAMIN':'Acción CIPAMIN','Reunião CIPAMIN':'Reunión CIPAMIN','Registros por frente':'Registros por frente'},
+  en:{'Treinamentos':'Training','Ação CIPAMIN':'CIPAMIN action','Reunião CIPAMIN':'CIPAMIN meeting','Registros por frente':'Records by area'},
+  fr:{'Treinamentos':'Formations','Ação CIPAMIN':'Action CIPAMIN','Reunião CIPAMIN':'Réunion CIPAMIN','Registros por frente':'Enregistrements par zone'},
+  de:{'Treinamentos':'Schulungen','Ação CIPAMIN':'CIPAMIN-Aktion','Reunião CIPAMIN':'CIPAMIN-Sitzung','Registros por frente':'Einträge nach Bereich'},
+  zh:{'Treinamentos':'培训','Ação CIPAMIN':'CIPAMIN行动','Reunião CIPAMIN':'CIPAMIN会议','Registros por frente':'按领域记录'}
+};
+Object.keys(volumeTerms).forEach(lang=>Object.assign(uiTerms[lang]||(uiTerms[lang]={}),volumeTerms[lang]));
 const FILTER_OPTION_KEYS={allAreas:'Todas as áreas',people:'Pessoas',processes:'Processos',allYears:'Todos os anos',allMonths:'Todos os meses',allStatuses:'Todos os status',valid:'Vigente',expired:'Vencido',noDate:'Sem data'};
 const FILTER_MONTH_KEYS=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 function filterText(source,lang=document.documentElement.lang||'pt-BR'){const own=(FILTER_TERMS[lang]||{})[source]||(uiTerms[lang]||{})[source];if(own)return own;if(lang==='pt-BR'||lang==='pt-PT')return source;return (FILTER_TERMS.en||{})[source]||(uiTerms.en||{})[source]||source}
@@ -111,6 +123,8 @@ buildProcessos=async function(){
   const extra=`${chartBlock}<div class="grid"><div class="panel wide"><div class="panel-head"><div><div class="panel-kicker">Controle preventivo</div><h3>Inspeções mensais de segurança</h3></div><span class="badge">${inspectionData.length} registros</span></div>${table('inspections-table',['Unidade','Data','Tipo de inspeção','Inspetores','Resultado'],inspectionRows,'Buscar unidade, tipo ou inspetor')}</div><div class="panel wide"><div class="panel-head"><div><div class="panel-kicker">Verificação de conformidade</div><h3>VCT</h3></div><span class="badge">${vctData.length} registros</span></div>${table('vct-table',['Unidade','Data','Processo auditado','Inspetores','Não conformidades'],vctRows,'Buscar unidade, processo ou inspetor')}</div></div>`;
   return html.replace('</section>',`${extra}</section>`);
 };
+const originalProcessosWithExtras=buildProcessos;
+buildProcessos=async function(){const html=await originalProcessosWithExtras();const [cipamin,training]=await Promise.all([load(SOURCES.processos.id,SOURCES.processos.sheets.cipamin),load(SOURCES.pessoas.id,SOURCES.pessoas.sheets.treinos)]);const cipaminRows=filled(cipamin.rows),trainingRows=filled(training.rows),meetings=cipaminRows.filter(row=>/reuni/i.test(clean(row[2]))).length,actions=Math.max(0,cipaminRows.length-meetings),volume=[0,0,0,0,trainingRows.length,actions,meetings],labels=['Notas','DDS','Inspeções','VCT','Treinamentos','Ação CIPAMIN','Reunião CIPAMIN'];const replacement=panel('Volume por frente de controle','Relação entre processos',`<div class="chart">${bars(volume,labels)}</div><div class="legend"><span><b class="ink"></b>Registros por frente</span></div>`);return html.replace(/<article class="panel"><div class="panel-head"><div><div class="panel-kicker">Relação entre processos<\/div><h3>Volume por frente de controle<\/h3><\/div><\/div>[\s\S]*?<\/article>/,replacement)};
 function dateCell(value){const text=clean(value);return /Date\(\d{4},\d{1,2},\d{1,2}\)/.test(text)||/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(text)||/^\d{4}-\d{1,2}-\d{1,2}/.test(text)?date(value):null}
 const refreshFilterOptionsSafe=refreshFilterOptions;
 refreshFilterOptions=function(lang=document.documentElement.lang||'pt-BR'){const year=$('#filter-year'),month=$('#filter-month');if(!year||!month)return;const years=[...new Set(Object.entries(cache).flatMap(([key,data])=>{const sheet=CACHE_SHEETS[key],config=FILTER_SHEETS[sheet];const indexes=config?.dates||[];return data.rows.flatMap(row=>(indexes.length?indexes.map(index=>dateCell(row[index])):[]).filter(Boolean).map(d=>d.getFullYear()))}))].sort((a,b)=>b-a);const selectedYear=FILTERS.year,selectedMonth=FILTERS.month;year.innerHTML=`<option value="all">${filterText(FILTER_OPTION_KEYS.allYears,lang)}</option>${years.map(value=>`<option value="${value}">${value}</option>`).join('')}`;month.innerHTML=`<option value="all">${filterText(FILTER_OPTION_KEYS.allMonths,lang)}</option>${FILTER_MONTH_KEYS.map((value,index)=>`<option value="${index+1}">${filterText(value,lang)}</option>`).join('')}`;document.querySelectorAll('[data-filter-label]').forEach(option=>{option.textContent=filterText(FILTER_OPTION_KEYS[option.dataset.filterLabel]||option.dataset.filterLabel,lang)});year.value=years.map(String).includes(selectedYear)?selectedYear:'all';month.value=selectedMonth};
@@ -118,7 +132,7 @@ const originalBars=bars;
 bars=function(values,labels){const safeLabels=labels.map(label=>{const value=String(label);return value.length>16?`${value.slice(0,15)}…`:value});return originalBars(values,safeLabels)};
 function applyAreaFilter(){const people=$('#pessoas'),processes=$('#processos');if(people)people.hidden=FILTERS.area==='processes';if(processes)processes.hidden=FILTERS.area==='people'}
 function wireFilters(){const toolbar=$('#global-filters');if(!toolbar)return;refreshFilterOptions(document.documentElement.lang||'pt-BR');if(toolbar.dataset.wired)return;['filter-area','filter-year','filter-month','filter-status'].forEach(id=>{const control=$('#'+id);if(control)control.addEventListener('change',()=>{FILTERS[id.replace('filter-','')]=control.value;render()})});const clear=$('#clear-filters');if(clear)clear.addEventListener('click',()=>{Object.assign(FILTERS,{year:'all',month:'all',status:'all',area:'all'});render()});toolbar.dataset.wired='1'}
-function removeUnusedFollowUps(){document.querySelectorAll('#pessoas .panel').forEach(panel=>{if(panel.querySelector('h3')?.textContent.trim()!=='Cobertura do controle')return;panel.querySelectorAll('.list-row').forEach(row=>{const label=row.querySelector('strong')?.textContent.trim();if(label==='Sem data de validade'||label==='Direito de recusa / PARE')row.remove()})})}
+function removeUnusedFollowUps(){document.querySelectorAll('#pessoas .panel').forEach(panel=>{const heading=panel.querySelector('h3')?.textContent.trim();if(heading==='Leitura para gestão'){panel.remove();return}if(heading!=='Cobertura do controle')return;panel.querySelectorAll('.list-row').forEach(row=>{const label=row.querySelector('strong')?.textContent.trim();if(label==='Sem data de validade'||label==='Direito de recusa / PARE')row.remove()})})}
 const originalBuildPessoas=buildPessoas;
 buildPessoas=async function(){const html=await originalBuildPessoas();const marker='<h3>Leitura para gestão</h3>';const start=html.lastIndexOf('<article class="panel"',html.indexOf(marker));const end=html.indexOf('</article>',start)+10;const withoutManagement=start>=0&&end>9?html.slice(0,start)+html.slice(end):html;return withoutManagement.replace(/<article class="metric "><div class="metric-label">Treinamentos registrados<\/div><div class="metric-value">.*?<\/div><div class="metric-note">linhas preenchidas<\/div><\/article>/,'')};
 const renderWithFilters=render;
