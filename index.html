@@ -8,7 +8,7 @@
   <link rel="icon" type="image/png" href="assets/enaex-mark.png">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=interaction-20260714">
+  <link rel="stylesheet" href="styles.css?v=interaction-20260715">
 </head>
 <body>
   <header class="topbar"><a class="brand" href="#top" aria-label="Enaex Brasil"><img src="assets/enaex-white.png" alt="Enaex Brasil"></a><div class="topbar-title"><strong data-i18n="dashboardTitle">SAÚDE &amp; SEGURANÇA DO TRABALHO - US VALE VERDE</strong></div><div class="language-control"><label for="language" class="sr-only">Idioma</label><span aria-hidden="true">文A</span><select id="language" aria-label="Traduzir página"><option value="pt-BR">Português (Brasil)</option><option value="pt-PT">Português (Portugal)</option><option value="es">Español</option><option value="en">English</option><option value="zh">中文</option><option value="fr">Français</option><option value="de">Deutsch</option></select></div></header>
@@ -16,8 +16,16 @@
   <main id="top" class="shell">
     <div class="shape-layer" aria-hidden="true"><span class="hex hex-a"></span><span class="hex hex-b"></span><span class="hex hex-c"></span><span class="hex hex-d"></span><span class="hex hex-e"></span><span class="hex hex-f"></span></div>
     <section class="intro"><div class="eyebrow" data-i18n="eyebrow">Sustentabilidade &amp; HSECQ</div><h1 data-i18n="carePhrase">Eu cuido de você, você cuida de min e juntos cuidamos um dos outros.</h1><p data-i18n="introText">Indicadores de segurança para acompanhar a saúde das pessoas, a validade dos controles e a disciplina dos processos na operação.</p></section>
+    <section class="filter-toolbar" id="global-filters" aria-label="Filtros do painel">
+      <div class="filter-heading"><span class="filter-heading-mark" aria-hidden="true"></span><div><div class="panel-kicker" data-i18n="filters">Filtros</div><strong data-i18n="filterDescription">Refine indicadores, gráficos e registros</strong></div></div>
+      <div class="filter-field"><label for="filter-area" data-i18n="area">Área</label><select id="filter-area"><option value="all" data-filter-label="allAreas">Todas as áreas</option><option value="people" data-filter-label="people">Pessoas</option><option value="processes" data-filter-label="processes">Processos</option></select></div>
+      <div class="filter-field"><label for="filter-year" data-i18n="year">Ano</label><select id="filter-year"><option value="all" data-filter-label="allYears">Todos os anos</option></select></div>
+      <div class="filter-field"><label for="filter-month" data-i18n="month">Mês</label><select id="filter-month"><option value="all" data-filter-label="allMonths">Todos os meses</option></select></div>
+      <div class="filter-field"><label for="filter-status" data-i18n="status">Status</label><select id="filter-status"><option value="all" data-filter-label="allStatuses">Todos os status</option><option value="good" data-filter-label="valid">Vigente</option><option value="danger" data-filter-label="expired">Vencido</option><option value="warn" data-filter-label="noDate">Sem data</option></select></div>
+      <button class="filter-reset" id="clear-filters" type="button" data-i18n="clearFilters">Limpar filtros</button>
+    </section>
     <div id="dashboard"><div class="loading"><div class="spinner"></div><p>Carregando indicadores das planilhas…</p></div></div>
     <footer><span data-i18n="confidential">Strictly Private and Confidential.</span><button id="back-to-top" class="top-button" type="button" data-i18n="backToTop">Subir ao topo <span aria-hidden="true">↑</span></button></footer>
-  </main><script src="app.js?v=interaction-20260714"></script>
+  </main><script src="app.js?v=interaction-20260715"></script>
 </body>
 </html>
