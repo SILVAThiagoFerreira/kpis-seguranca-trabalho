@@ -78,6 +78,16 @@ const FILTER_TERMS={
 };
 Object.keys(FILTER_TERMS).forEach(lang=>Object.assign(uiTerms[lang]||(uiTerms[lang]={}),FILTER_TERMS[lang]));
 Object.assign(FILTER_TERMS.es,{'Todos os anos':'Todos los años','Todos os meses':'Todos los meses','Todos os status':'Todos los estados'});
+const TOPIC_TERMS={
+  'pt-BR':{'Saúde ocupacional':'Saúde ocupacional','Capacitação e prontidão':'Capacitação e prontidão'},
+  'pt-PT':{'Saúde ocupacional':'Saúde ocupacional','Capacitação e prontidão':'Capacitação e prontidão'},
+  es:{'Saúde ocupacional':'Salud ocupacional','Capacitação e prontidão':'Capacitación y preparación'},
+  en:{'Saúde ocupacional':'Occupational health','Capacitação e prontidão':'Training and readiness'},
+  fr:{'Saúde ocupacional':'Santé au travail','Capacitação e prontidão':'Formation et préparation'},
+  de:{'Saúde ocupacional':'Arbeitsgesundheit','Capacitação e prontidão':'Schulung und Einsatzbereitschaft'},
+  zh:{'Saúde ocupacional':'职业健康','Capacitação e prontidão':'培训与准备度'}
+};
+Object.keys(TOPIC_TERMS).forEach(lang=>Object.assign(uiTerms[lang]||(uiTerms[lang]={}),TOPIC_TERMS[lang]));
 const volumeTerms={
   'pt-BR':{'Treinamentos':'Treinamentos','Ação CIPAMIN':'Ação CIPAMIN','Reunião CIPAMIN':'Reunião CIPAMIN','Registros por frente':'Registros por frente'},
   'pt-PT':{'Treinamentos':'Formações','Ação CIPAMIN':'Ação CIPAMIN','Reunião CIPAMIN':'Reunião CIPAMIN','Registros por frente':'Registos por frente'},
