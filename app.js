@@ -33,7 +33,7 @@ const filled=(rows,i=0)=>rows.filter(r=>clean(r[i]));
 function num(v){if(typeof v==='number')return v;return Number(clean(v).replace('%','').replace('.','').replace(',','.'))||0}
 function pct(v){const n=num(v);return n<=1?n*100:n}
 function date(v){if(!v)return null;const m=String(v).match(/Date\((\d+),(\d+),(\d+)\)/);if(m)return new Date(+m[1],+m[2],+m[3]);const d=new Date(v);return isNaN(d)?null:d}
-function fmtDate(v){const d=date(v);return d?d.toLocaleDateString('pt-BR'):'—'}
+function fmtDate(v){const d=date(v);return d?[d.getDate(),d.getMonth()+1,d.getFullYear()].map(value=>String(value).padStart(2,'0')).join('/'):'—'}
 function statusDate(v){const d=date(v);if(!d)return ['Sem data','warn'];return d<new Date()?['Vencido','danger']:['Vigente','good']}
 function url(id,sheet){return `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:json&range=A1:CU1000&sheet=${encodeURIComponent(sheet)}`}
 async function load(id,sheet){const key=id+sheet;if(cache[key])return cache[key];const res=await fetch(url(id,sheet));if(!res.ok)throw Error(`falha ao acessar a aba ${sheet}`);const raw=await res.text();const j=JSON.parse(raw.replace(/^[^(]*\(/,'').replace(/\);?\s*$/,''));return cache[key]={cols:j.table.cols.map(c=>c.label||''),rows:j.table.rows.map(r=>r.c.map(c=>c?.v??''))}}
