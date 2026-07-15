@@ -38,4 +38,10 @@
 /* O painel de volume foi removido da primeira linha de Processos. O gráfico
    restante precisa ocupar a linha inteira para não deixar uma coluna vazia. */
 #processos > .grid:not(.extra-controls-grid) > .panel:first-child{grid-column:1 / -1}
+
+/* Evita linhas órfãs nos textos de apresentação quando ainda há espaço
+   disponível no layout, mantendo a quebra natural em telas menores. */
+.intro h1{max-width:1200px;text-wrap:balance}
+.intro p,.section-header p{ text-wrap:balance }
+@media(max-width:900px){.intro h1{max-width:none}}
 .data-table th button:after{content:' ↕';color:#a7b0b5;font-size:11px}.data-table th button[aria-sort='ascending']:after{content:' ↑';color:var(--red)}.data-table th button[aria-sort='descending']:after{content:' ↓';color:var(--red)}
