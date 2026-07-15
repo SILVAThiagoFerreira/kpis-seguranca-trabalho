@@ -21,4 +21,13 @@
 .extra-control-list{display:grid;gap:.15rem}
 .extra-control-list .list-row{align-items:flex-start;gap:1rem}
 .extra-control-list .list-row span{max-width:58%;text-align:right;overflow-wrap:anywhere}
+
+/* As tabelas ocupam toda a largura disponível; somente o excesso de linhas
+   fica rolável. O conteúdo das células quebra linha para não criar rolagem
+   horizontal, inclusive nos controles extras em telas menores. */
+.table-wrap,.extra-table-wrap{overflow-x:hidden;overflow-y:auto;max-width:100%;scrollbar-gutter:stable}
+.data-table,.extra-data-table{width:100%;min-width:0;table-layout:fixed}
+.data-table th,.data-table td,.extra-data-table th,.extra-data-table td{white-space:normal;overflow-wrap:anywhere;word-break:break-word}
+.extra-data-table{min-width:0}
+@media(max-width:700px){.table-wrap{padding-bottom:0}.table-wrap::after{content:none}}
 @media (max-width:700px){.control-summary{align-items:flex-start;flex-direction:column}.extra-control-list .list-row{display:block}.extra-control-list .list-row span{display:block;max-width:none;margin-top:.2rem;text-align:left}}
