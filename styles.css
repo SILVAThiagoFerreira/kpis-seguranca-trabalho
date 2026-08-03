@@ -60,3 +60,13 @@
 .section-description--pessoas::before{content:'PESSOAS';display:block;margin-right:10px;padding-right:10px;border-right:1px solid var(--line);color:var(--red);font-size:9px;letter-spacing:.12em;font-weight:700;line-height:1.15}
 .section-header{transition:border-color .18s ease,box-shadow .18s ease}.section-header:hover{border-color:#c9d0d4;box-shadow:0 12px 28px rgba(56,66,75,.09)}
 @media(max-width:900px){.section-description--pessoas{max-width:100%;width:100%;margin-top:10px!important}.section-description--pessoas::before{flex:none}}
+
+/* Ritmo visual: evita cartões vazios ao lado de gráficos e faz a sequência
+   dos indicadores ocupar a grade de forma contínua. */
+#pessoas .topic-panels{align-items:start}
+#pessoas .topic-panels .panel:not(:has(.chart)){min-height:0}
+#pessoas .extra-controls-grid .panel:has(> .footnote){min-height:150px}
+.audit-chart-grid .panel:last-child{grid-column:1 / -1}
+.audit-chart-grid .panel:last-child .chart{width:100%;max-width:none}
+#pessoas .topic-block:nth-child(2) .topic-panels{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:900px){#pessoas .topic-block:nth-child(2) .topic-panels{grid-template-columns:1fr}}
