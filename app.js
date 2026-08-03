@@ -9,7 +9,7 @@ const $=s=>document.querySelector(s);let cache={};
 const VERIFIED_SHEETS=new Set(['Gestão de ASOS','Horas','Horas Treinadas','Direito de Recusa (Aplicação)','Atestados','Avaliação de Contratadas (MVV)','DDS (Temas Abordados)','Inspeções Mensais de Segurança','VCT','Validade de documentos e Laudos','Validade de Comissionameno)','Gestão De Extintores','CIPAMIN (Reuniões e Ações)','CIPAMIN (Composição)']);
 const FILTERS={year:'2026',month:'all',status:'all',area:'all'};const CACHE_SHEETS={};
 const FILTER_SHEETS={
-  'Gestão de ASOS':{dates:[3],status:4},
+  'Gestão de ASOS':{dates:[3,4],status:4},
   'Avaliação de Contratadas (MVV)':{dates:[1]},
   'DDS (Participação)':{dates:[1]},
   'DDS (Temas Abordados)':{dates:[1]},
