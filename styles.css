@@ -45,3 +45,11 @@
 .intro p,.section-header p{ text-wrap:balance }
 @media(max-width:900px){.intro h1{max-width:none}}
 .data-table th button:after{content:' ↕';color:#a7b0b5;font-size:11px}.data-table th button[aria-sort='ascending']:after{content:' ↑';color:var(--red)}.data-table th button[aria-sort='descending']:after{content:' ↓';color:var(--red)}
+
+/* Ajustes de leitura: descrição institucional contínua em telas amplas e
+   subtítulo de Pessoas destacado como uma unidade de contexto. */
+@media(min-width:901px){.intro p{max-width:none;white-space:nowrap;text-wrap:nowrap}}
+.section-description--pessoas{display:flex;align-items:center;min-height:42px;max-width:390px;padding:10px 14px!important;border:1px solid #cfd6da!important;border-left:4px solid var(--red)!important;border-radius:2px!important;background:#fff!important;color:var(--ink)!important;font-weight:600;box-shadow:0 5px 14px rgba(56,66,75,.06)}
+.section-description--pessoas::before{content:'PESSOAS';display:block;margin-right:10px;padding-right:10px;border-right:1px solid var(--line);color:var(--red);font-size:9px;letter-spacing:.12em;font-weight:700;line-height:1.15}
+.section-header{transition:border-color .18s ease,box-shadow .18s ease}.section-header:hover{border-color:#c9d0d4;box-shadow:0 12px 28px rgba(56,66,75,.09)}
+@media(max-width:900px){.section-description--pessoas{max-width:100%;width:100%;margin-top:10px!important}.section-description--pessoas::before{flex:none}}
