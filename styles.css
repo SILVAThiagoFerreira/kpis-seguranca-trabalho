@@ -39,6 +39,13 @@
    restante precisa ocupar a linha inteira para não deixar uma coluna vazia. */
 #processos > .grid:not(.extra-controls-grid) > .panel:first-child{grid-column:1 / -1}
 
+/* O VCT reúne processos extensos: ocupa uma linha inteira para dar espaço
+   aos rótulos, às barras e aos valores sem reduzir a leitura. */
+.audit-chart-grid .panel:has(.chart--horizontal){grid-column:1 / -1;min-height:360px}
+.audit-chart-grid .panel:has(.chart--horizontal) .chart--horizontal{min-height:310px}
+.audit-chart-grid .panel:has(.chart--horizontal) .chart--horizontal svg{min-height:310px}
+@media(max-width:700px){.audit-chart-grid .panel:has(.chart--horizontal){min-height:390px}.audit-chart-grid .panel:has(.chart--horizontal) .chart--horizontal,.audit-chart-grid .panel:has(.chart--horizontal) .chart--horizontal svg{min-height:340px}}
+
 /* Evita linhas órfãs nos textos de apresentação quando ainda há espaço
    disponível no layout, mantendo a quebra natural em telas menores. */
 .intro h1{max-width:1200px;text-wrap:balance}
