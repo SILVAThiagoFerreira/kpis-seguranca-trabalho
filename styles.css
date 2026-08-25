@@ -71,3 +71,5 @@
 .audit-chart-grid .panel:last-child .chart{width:100%;max-width:none}
 #pessoas .topic-block:nth-child(2) .topic-panels{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media(max-width:900px){#pessoas .topic-block:nth-child(2) .topic-panels{grid-template-columns:1fr}}
+/* Indicador de resolução de desvios: linha de meta e painel operacional */
+.target-line{stroke:var(--green);stroke-width:2;stroke-dasharray:7 5}.target-label{font-size:10px;fill:var(--green);font-weight:700}.target-mark{background:var(--green)!important;border-radius:0!important;width:18px!important;height:2px!important;vertical-align:middle}.accident-control-grid{margin-top:18px}.accident-control-grid .panel{min-height:0}.accident-control-grid .metrics{margin:0 0 18px}.accident-control-grid .chart{margin-top:8px}
