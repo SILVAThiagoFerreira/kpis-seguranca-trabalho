@@ -1,12 +1,12 @@
 const SOURCES={
   pessoas:{id:'1XAH58-6rwC0kFHVwKlgvknFjLjLE-S7d',sheets:{asos:'Gestão de ASOS',treinos:'Treinamentos Obrigatórios',horas:'Horas Treinadas',recusa:'Direito de Recusa (Aplicação)',atestados:'Atestados',pare:'PARE (Aplicação)'}},
-  processos:{id:'1v0gp-iixQYqfZ2ah68clCmf_PdGv9Ydz',sheets:{nota:'Avaliação de Contratadas (MVV)',dds:'DDS (Participação)',temas:'DDS (Temas Abordados)',inspecoes:'Inspeções Mensais de Segurança',vct:'VCT',docs:'Validade de documentos e Laudos',comiss:'Validade de Comissionameno)',acidentes:'Acidentes e Incidentes',epis:'Gestão de EPIS',fardamentos:'Gestão de Fardamentos ',cipamin:'CIPAMIN (Reuniões e Ações)'}}
+  processos:{id:'1v0gp-iixQYqfZ2ah68clCmf_PdGv9Ydz',sheets:{nota:'Avaliação de Contratadas (MVV)',dds:'DDS (Participação)',temas:'DDS (Temas Abordados)',inspecoes:'Inspeções Mensais de Segurança',vct:'VCT',docs:'Validade de documentos e Laudos',comiss:'Validade de Comissionameno)',acidentes:'Incidentes e Acidentes',epis:'Gestão de EPIS',fardamentos:'Gestão de Fardamentos ',cipamin:'CIPAMIN (Reuniões e Ações)'}}
 };
 const $=s=>document.querySelector(s);let cache={};
 // Abas confirmadas nas planilhas públicas atuais. O GViz devolve a primeira
 // aba quando o nome solicitado não existe; bloquear nomes ausentes evita que
 // uma base seja contada por engano como DDS, EPI, acidente ou PARE.
-const VERIFIED_SHEETS=new Set(['Gestão de ASOS','Horas','Horas Treinadas','Direito de Recusa (Aplicação)','Atestados','Avaliação de Contratadas (MVV)','DDS (Temas Abordados)','Inspeções Mensais de Segurança','VCT','Validade de documentos e Laudos','Validade de Comissionameno)','Gestão De Extintores','CIPAMIN (Reuniões e Ações)','CIPAMIN (Composição)','Acidentes e Incidentes']);
+const VERIFIED_SHEETS=new Set(['Gestão de ASOS','Horas','Horas Treinadas','Direito de Recusa (Aplicação)','Atestados','Avaliação de Contratadas (MVV)','DDS (Temas Abordados)','Inspeções Mensais de Segurança','VCT','Validade de documentos e Laudos','Validade de Comissionameno)','Gestão De Extintores','CIPAMIN (Reuniões e Ações)','CIPAMIN (Composição)','Gestão de Desvios','Incidentes e Acidentes']);
 const FILTERS={year:'2026',month:'all',status:'all',area:'all'};const CACHE_SHEETS={};
 const FILTER_SHEETS={
   'Gestão de ASOS':{dates:[3,4],status:4},
@@ -221,7 +221,7 @@ const accidentRowsFromBase=data=>{
   const headerRow=rows.find(row=>row.filter(value=>clean(value)).length>=3&&row.some(value=>/desvio|resolvido|pendente|finalizada|prevista|status/i.test(clean(value))));
   const effective=headers.some(value=>/desvio|resolvido|pendente|finalizada|prevista/i.test(value))?headers:(headerRow||[]).map(clean);
   const offset=effective===headers?0:Math.max(0,rows.indexOf(headerRow)+1);
-  const idx={unit:accidentHeaderIndex(effective,['unidade de servico','unidade']),month:accidentHeaderIndex(effective,['mes','data']),registered:accidentHeaderIndex(effective,['quantidade de desvios','desvios registrados','quantidade de acidentes','quantidade de incidentes']),resolved:accidentHeaderIndex(effective,['resolvidos','acoes finalizadas','investigacao finalizada','finalizadas']),pending:accidentHeaderIndex(effective,['pendentes','acoes previstas','acoes pendentes']),type:accidentHeaderIndex(effective,['tipo']),status:accidentHeaderIndex(effective,['status'])};
+  const idx={unit:accidentHeaderIndex(effective,['unidade de servico','unidade']),month:accidentHeaderIndex(effective,['mes','data']),registered:accidentHeaderIndex(effective,['quantidade de desvios','desvios registrados','quantidade de acidentes','quantidade de incidentes','quantidades de acoes previstas']),resolved:accidentHeaderIndex(effective,['resolvidos','acoes finalizadas','quantidade de acoes finalizadas','investigacao finalizada','finalizadas']),pending:accidentHeaderIndex(effective,['pendentes','acoes pendentes']),type:accidentHeaderIndex(effective,['tipo']),status:accidentHeaderIndex(effective,['status'])};
   if(idx.registered<0||idx.resolved<0)return {headers:effective,rows:[],idx,reason:'A base ainda não contém as colunas de desvios/resolvidos'};
   return {headers:effective,idx,rows:rows.slice(offset).filter(row=>clean(row[idx.registered])||clean(row[idx.resolved])||clean(row[idx.pending]))};
 };
