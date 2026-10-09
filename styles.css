@@ -28,15 +28,16 @@ button,input,select{font-family:inherit}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
 /* ---------- Cabeçalho ---------- */
-.topbar{height:68px;background:var(--paper);border-bottom:1px solid var(--line);border-top:4px solid var(--red);display:flex;align-items:center;gap:20px;padding:0 clamp(20px,4vw,64px);position:relative;z-index:4}
+.topbar{height:70px;background:var(--ink);border-bottom:4px solid var(--red);display:flex;align-items:center;gap:20px;padding:0 clamp(20px,4vw,64px);color:#fff;position:relative;z-index:4}
 .brand{display:block;flex:none}
 .brand img{width:104px;display:block}
 .topbar-title{flex:1;text-align:center;min-width:0}
-.topbar-title strong{font:600 17px/1.2 'Barlow Condensed',sans-serif;letter-spacing:.06em;color:var(--ink);text-transform:uppercase}
-.language-control{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;flex:none}
+.topbar-title strong{font:600 21px/1.2 'Barlow Condensed',sans-serif;letter-spacing:.02em;color:#fff;text-transform:uppercase}
+.language-control{display:flex;align-items:center;gap:8px;color:#dce1e4;font-size:16px;flex:none}
 .language-control span{display:none}
-.language-control select{height:34px;padding:0 28px 0 10px;border:1px solid var(--line);border-radius:0;background:var(--paper);color:var(--ink);font:500 12px 'DM Sans';outline:none;cursor:pointer}
+.language-control select{height:34px;max-width:144px;padding:0 8px;border:1px solid rgba(255,255,255,.28);border-radius:0;background:transparent;color:#fff;font:500 11px 'DM Sans';outline:none;cursor:pointer}
 .language-control select:focus{border-color:var(--red)}
+.language-control option{background:var(--ink);color:#fff}
 
 /* Navegação por âncoras */
 .anchor-nav{position:sticky;top:0;z-index:3;background:var(--paper);border-bottom:1px solid var(--line);height:46px;display:flex;justify-content:center;gap:4px}
