@@ -7,7 +7,8 @@ const $=s=>document.querySelector(s);let cache={};
 // aba quando o nome solicitado não existe; bloquear nomes ausentes evita que
 // uma base seja contada por engano como DDS, EPI, acidente ou PARE.
 const VERIFIED_SHEETS=new Set(['Gestão de ASOS','Horas','Horas Treinadas','Direito de Recusa (Aplicação)','Atestados','Avaliação de Contratadas (MVV)','DDS (Temas Abordados)','Inspeções Mensais de Segurança','VCT','Validade de documentos e Laudos','Validade de Comissionameno)','Gestão De Extintores','Licenças e Condicionantes','Manutenção de Trava-quedas','CIPAMIN (Reuniões e Ações)','CIPAMIN (Composição)','Gestão de Desvios','Incidentes e Acidentes']);
-const FILTERS={year:'2026',month:'all',status:'all',area:'all'};const CACHE_SHEETS={};
+// yearChosen vira true quando o usuário escolhe um ano no filtro; até lá a tabela de temas mostra todo o histórico.
+const FILTERS={year:'2026',month:'all',status:'all',area:'all'};let yearChosen=false;const CACHE_SHEETS={};
 const FILTER_SHEETS={
   'Gestão de ASOS':{dates:[3,4],status:4},
   'Avaliação de Contratadas (MVV)':{dates:[1]},
@@ -22,12 +23,12 @@ const FILTER_SHEETS={
   'Gestão de Fardamentos ':{status:'stock',value:3}
 };
 function filterIsActive(){return FILTERS.year!=='all'||FILTERS.month!=='all'||FILTERS.status!=='all'}
-function rowMatchesFilter(row,config={}){
+function rowMatchesFilter(row,config={},filters=FILTERS){
   const indexes=config.dates||[];
   const dates=indexes.map(index=>date(row[index])).filter(Boolean);
-  if(FILTERS.year!=='all'&&indexes.length&&!dates.some(d=>d.getFullYear()===Number(FILTERS.year)))return false;
-  if(FILTERS.month!=='all'&&indexes.length&&!dates.some(d=>d.getMonth()===Number(FILTERS.month)-1))return false;
-  if(FILTERS.status!=='all'&&config.status!==undefined){const state=config.status==='stock'?(num(row[config.value])>0?'good':'danger'):statusDate(row[config.status])[1];if(state!==FILTERS.status)return false}
+  if(filters.year!=='all'&&indexes.length&&!dates.some(d=>d.getFullYear()===Number(filters.year)))return false;
+  if(filters.month!=='all'&&indexes.length&&!dates.some(d=>d.getMonth()===Number(filters.month)-1))return false;
+  if(filters.status!=='all'&&config.status!==undefined){const state=config.status==='stock'?(num(row[config.value])>0?'good':'danger'):statusDate(row[config.status])[1];if(state!==filters.status)return false}
   return true;
 }
 const rawLoad=load;
@@ -149,7 +150,7 @@ refreshFilterOptions=function(lang=document.documentElement.lang||'pt-BR'){const
 const originalBars=bars;
 bars=function(values,labels){const safeLabels=labels.map(label=>{const value=String(label);return value.length>16?`${value.slice(0,15)}…`:value});return originalBars(values,safeLabels)};
 function applyAreaFilter(){const people=$('#pessoas'),processes=$('#processos');if(people)people.hidden=FILTERS.area==='processes';if(processes)processes.hidden=FILTERS.area==='people'}
-function wireFilters(){const toolbar=$('#global-filters');if(!toolbar)return;refreshFilterOptions(document.documentElement.lang||'pt-BR');if(toolbar.dataset.wired)return;['filter-area','filter-year','filter-month','filter-status'].forEach(id=>{const control=$('#'+id);if(control)control.addEventListener('change',()=>{FILTERS[id.replace('filter-','')]=control.value;render()})});const clear=$('#clear-filters');if(clear)clear.addEventListener('click',()=>{Object.assign(FILTERS,{year:'2026',month:'all',status:'all',area:'all'});['filter-area','filter-month','filter-status'].forEach(id=>{const control=$('#'+id);if(control)control.value='all'});const year=$('#filter-year');if(year)year.value='2026';render()});toolbar.dataset.wired='1'}
+function wireFilters(){const toolbar=$('#global-filters');if(!toolbar)return;refreshFilterOptions(document.documentElement.lang||'pt-BR');if(toolbar.dataset.wired)return;['filter-area','filter-year','filter-month','filter-status'].forEach(id=>{const control=$('#'+id);if(control)control.addEventListener('change',()=>{FILTERS[id.replace('filter-','')]=control.value;if(id==='filter-year')yearChosen=true;render()})});const clear=$('#clear-filters');if(clear)clear.addEventListener('click',()=>{Object.assign(FILTERS,{year:'2026',month:'all',status:'all',area:'all'});['filter-area','filter-month','filter-status'].forEach(id=>{const control=$('#'+id);if(control)control.value='all'});const year=$('#filter-year');if(year)year.value='2026';yearChosen=false;render()});toolbar.dataset.wired='1'}
 function removeUnusedFollowUps(){document.querySelectorAll('#pessoas .panel').forEach(panel=>{if(panel.querySelector('h3')?.textContent.trim()!=='Cobertura do controle')return;panel.querySelectorAll('.list-row').forEach(row=>{const label=row.querySelector('strong')?.textContent.trim();if(label==='Sem data de validade'||label==='Direito de recusa / PARE')row.remove()})})}
 function organizePeopleTopics(){const section=$('#pessoas'),metrics=section?.querySelector(':scope > .metrics'),grid=section?.querySelector(':scope > .grid');if(!section||!metrics||!grid||section.dataset.topicsOrganized)return;const cards=[...metrics.children].filter(card=>card.querySelector('.metric-label')?.textContent.trim()!=='Treinamentos registrados'),panels=[...grid.children],panelByTitle=title=>panels.find(panel=>panel.querySelector('h3')?.textContent.trim()===title);const makeTopic=(title,cardIndexes,panelTitles)=>{const block=document.createElement('div');block.className='topic-block';block.innerHTML=`<div class="topic-block-head"><span class="topic-block-mark" aria-hidden="true"></span><h3>${title}</h3></div>`;const cardGrid=document.createElement('div');cardGrid.className='topic-metrics';cardIndexes.forEach(index=>cards[index]&&cardGrid.append(cards[index]));const panelGrid=document.createElement('div');panelGrid.className='topic-panels';panelTitles.map(panelByTitle).filter(Boolean).forEach(panel=>panelGrid.append(panel));block.append(cardGrid,panelGrid);return block};const topics=document.createElement('div');topics.className='people-topics';topics.append(makeTopic('Saúde ocupacional',[0,1,2],['ASOs emitidos por mês','Cobertura do controle','Colaboradores e validade do ASO']),makeTopic('Capacitação e prontidão',[],['Horas de treinamento por mês']));metrics.remove();grid.remove();section.append(topics);section.dataset.topicsOrganized='1'}
 const renderWithFilters=render;
@@ -180,7 +181,7 @@ buildPessoas=async function(){const s=SOURCES.pessoas,[a,t,h,r,at,p]=await Promi
 // resolvidas por candidatos para suportar diferenças de acentuação/nomenclatura
 // entre versões da base sem duplicar indicadores já apresentados acima.
 const EXTRA_CONTROL_SHEETS=[
-  {title:'Temas de DDS abordados',candidates:['DDS (Temas Abordados)'],source:'processos',expectedHeaders:['Data','Tema Abordado'],tableColumns:[['Unidade de Serviço',0],['Data',1,'date'],['Tema abordado',2]]},
+  {title:'Temas de DDS abordados',candidates:['DDS (Temas Abordados)'],source:'processos',fullHistory:true,expectedHeaders:['Data','Tema Abordado'],tableColumns:[['Unidade de Serviço',0],['Data',1,'date'],['Tema abordado',2]]},
   {title:'Direito de Recusa',candidates:['Direito de Recusa (Aplicação)'],source:'pessoas',expectedHeaders:['Colaborador'],kind:'right-to-refuse'},
   {title:'CIPAMIN - Reuniões e Ações',candidates:['CIPAMIN (Reuniões e Ações)'],source:'processos',expectedHeaders:['Mês','Ação prevista'],tableColumns:[['Unidade de Serviço',0],['Gestão CIPAMIN',1],['Mês',2,'date'],['Ação prevista',3],['Status',4]]},
   {title:'Validade de Comissionamento de Equipamentos e Veiculos',candidates:['Validade de Comissionameno)'],source:'processos',expectedHeaders:['Data do Comiss.','Validade'],tableColumns:[['Unidade de Serviço',0],['Tipo',1],['Modelo',3],['Comissionado por',6],['Data do comissionamento',7,'date'],['Validade',8,'date']]},
@@ -191,7 +192,9 @@ const EXTRA_CONTROL_SHEETS=[
 ];
 const normalizedHeader=value=>clean(value).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 const matchesExpectedHeaders=(data,item)=>!item.expectedHeaders||item.expectedHeaders.every(expected=>data.cols.some(actual=>normalizedHeader(actual).includes(normalizedHeader(expected))));
-const extraLoad=async item=>{const source=SOURCES[item.source],id=source.id;for(const sheet of item.candidates){try{const data=await load(id,sheet);if(matchesExpectedHeaders(data,item))return {sheet,data}}catch(error){/* a aba pode não existir */}}return {sheet:'Aba não validada',data:{cols:[],rows:[]}}};
+// Temas de DDS: sem ano escolhido no filtro, mostra todos os anos em ordem de data; mês e demais filtros continuam valendo.
+const loadTemasHistory=async(id,sheet)=>{const data=await rawLoad(id,sheet),config=FILTER_SHEETS[sheet],filters={...FILTERS,year:yearChosen?FILTERS.year:'all'},rows=config?data.rows.filter(row=>rowMatchesFilter(row,config,filters)):data.rows;return {...data,rows:[...rows].sort((a,b)=>(date(a[1])?.getTime()??0)-(date(b[1])?.getTime()??0))}};
+const extraLoad=async item=>{const source=SOURCES[item.source],id=source.id;for(const sheet of item.candidates){try{const data=await (item.fullHistory?loadTemasHistory:load)(id,sheet);if(matchesExpectedHeaders(data,item))return {sheet,data}}catch(error){/* a aba pode não existir */}}return {sheet:'Aba não validada',data:{cols:[],rows:[]}}};
 const htmlSafe=value=>clean(value).replace(/[&<>"']/g,character=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]));
 const extraValue=value=>{const text=clean(value),isDateLike=/^Date\(\d{4},\d{1,2},\d{1,2}\)$/.test(text)||/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(text)||/^\d{4}-\d{1,2}-\d{1,2}/.test(text);return isDateLike&&date(value)?fmtDate(value):htmlSafe(value)};
 const extraValueAt=(value,index,item)=>item.dateIndexes?.includes(index)?(date(value)?fmtDate(value):'—'):extraValue(value);
