@@ -35,7 +35,8 @@ button,input,select{font-family:inherit}
 .brand{display:block;flex:none}
 .brand img{height:28px;width:auto;display:block}
 .topbar-title{flex:1;text-align:center;min-width:0}
-.topbar-title strong{font:700 23px/1.2 Arial,Helvetica,sans-serif;letter-spacing:-.02em;color:#fff;text-transform:uppercase}
+.topbar-title strong{font:700 23px/1.2 Arial,Helvetica,sans-serif;letter-spacing:-.02em;color:#fff}
+.topbar-unit{flex:none;color:#ffffff94;font:600 10px/1 Arial,Helvetica,sans-serif;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
 .language-control{display:flex;align-items:center;gap:8px;color:#dce1e4;font-size:16px;flex:none}
 .language-control span{display:none}
 .language-control select{height:32px;max-width:144px;padding:0 8px;border:1px solid rgba(255,255,255,.28);border-radius:0;background:transparent;color:#fff;font:400 11px Arial,Helvetica,sans-serif;outline:none;cursor:pointer}
@@ -233,6 +234,7 @@ footer{display:flex;justify-content:space-between;align-items:center;gap:12px;co
   .topbar{height:54px;padding:0 16px;gap:12px}
   .brand img{height:24px}
   .topbar-title strong{font-size:14px}
+  .topbar-unit{display:none}
   .language-control select{max-width:140px}
   .shell{padding:28px 16px 20px}
   .intro h1{font-size:24px}
