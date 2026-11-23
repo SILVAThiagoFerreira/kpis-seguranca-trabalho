@@ -69,6 +69,14 @@ button,input,select{font-family:inherit}
 .filter-reset{height:36px;padding:0 16px;border:1px solid var(--ink);background:var(--paper);color:var(--ink);border-radius:0;font:400 12px Arial,Helvetica,sans-serif;letter-spacing:.02em;cursor:pointer;transition:background .15s ease,color .15s ease}
 .filter-reset:hover,.filter-reset:focus-visible{background:var(--ink);color:#fff}
 
+/* ---------- Exportação ---------- */
+.export-bar{display:flex;justify-content:flex-end;align-items:center;gap:14px;margin:-20px 0 28px}
+.export-status{font-size:12px;color:var(--red);max-width:520px;text-align:right}
+.btn-export{height:36px;padding:0 18px;border:1px solid var(--red);background:var(--red);color:#fff;border-radius:0;font:400 12px Arial,Helvetica,sans-serif;letter-spacing:.02em;cursor:pointer;transition:background .15s ease,border-color .15s ease}
+.btn-export:hover,.btn-export:focus-visible{background:#8E0E15;border-color:#8E0E15}
+.btn-export:disabled{opacity:.55;cursor:not-allowed}
+.btn-export:disabled[data-working]{cursor:progress}
+
 /* ---------- Seções ---------- */
 .section{margin:0 0 48px;scroll-margin-top:60px}
 .section-header{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;background:none;border:0;border-bottom:1px solid var(--line);padding:0 0 10px;margin-bottom:20px;box-shadow:none}

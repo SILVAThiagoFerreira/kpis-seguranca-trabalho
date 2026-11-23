@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
-  <link rel="stylesheet" href="styles.css?v=topbar-20261018-2">
+  <link rel="stylesheet" href="styles.css?v=pptx-20261123-1">
 </head>
 <body>
   <header class="topbar"><a class="brand" href="#top" aria-label="Enaex Brasil"><img src="assets/enaex-white.png" alt="Enaex Brasil"></a><div class="topbar-title"><strong data-i18n="dashboardTitle">Saúde &amp; Segurança do Trabalho</strong></div><div class="language-control"><label for="language" class="sr-only">Idioma</label><span aria-hidden="true">文A</span><select id="language" aria-label="Traduzir página"><option value="pt-BR">Português (Brasil)</option><option value="pt-PT">Português (Portugal)</option><option value="es">Español</option><option value="en">English</option><option value="zh">中文</option><option value="fr">Français</option><option value="de">Deutsch</option></select></div><span class="topbar-unit">US VALE VERDE</span></header>
@@ -25,8 +25,10 @@
       <div class="filter-field"><label for="filter-status" data-i18n="status">Status</label><select id="filter-status"><option value="all" data-filter-label="allStatuses">Todos os status</option><option value="good" data-filter-label="valid">Vigente</option><option value="danger" data-filter-label="expired">Vencido</option><option value="warn" data-filter-label="noDate">Sem data</option></select></div>
       <button class="filter-reset" id="clear-filters" type="button" data-i18n="clearFilters">Limpar filtros</button>
     </section>
+    <div class="export-bar"><span id="export-status" class="export-status" role="status" aria-live="polite"></span><button id="btn-pptx" class="btn-export" type="button" disabled>Baixar PowerPoint</button></div>
     <div id="dashboard"><div class="loading"><div class="spinner"></div><p>Carregando indicadores das planilhas…</p></div></div>
     <footer><span data-i18n="confidential">Strictly Private and Confidential.</span><button id="back-to-top" class="top-button" type="button" data-i18n="backToTop">Subir ao topo <span aria-hidden="true">↑</span></button></footer>
-  </main><script src="app.js?v=topbar-20261018-2"></script>
+  </main><script src="app.js?v=pptx-20261123-1"></script>
+  <script src="export.js?v=pptx-20261123-1"></script>
 </body>
 </html>
