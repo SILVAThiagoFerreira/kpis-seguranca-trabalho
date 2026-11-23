@@ -168,7 +168,11 @@
           tipo: metrica.classList.contains('alert') ? 'alerta' : metrica.classList.contains('good') ? 'bom' : ''
         };
       }),
-      paineis: [].slice.call(secao.querySelectorAll('article.panel')).filter(visivel).map(coletarPainel)
+      // A tabela "Temas de DDS abordados" (histórico completo, ~60 páginas) continua na página, mas fica fora do PowerPoint.
+      paineis: [].slice.call(secao.querySelectorAll('article.panel'))
+        .filter(visivel)
+        .map(coletarPainel)
+        .filter(function (painel) { return painel.titulo !== 'Temas de DDS abordados'; })
     };
   }
 
